@@ -9,7 +9,7 @@ services:
     depends_on:
       - aims_enrollments_db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/aims_enrollments_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://aims_enrollments_db:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=root
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
