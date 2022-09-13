@@ -1,6 +1,15 @@
-FROM amazoncorretto:17
+FROM eclipse-temurin:17-jdk-alpine
 
-MAINTAINER aims.unal.edu.co
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} enrollment_ms.jar
-ENTRYPOINT ["java", "-jar", "/enrollment_ms.jar"]
+WORKDIR /app
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+
+RUN chmod +x ./mvnw
+RUN ./mvnw dependency:resolve
+
+COPY src ./src
+
+EXPOSE 8080
+
+CMD ["./mvnw", "spring-boot:run"]
