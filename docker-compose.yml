@@ -1,7 +1,7 @@
 version: '3.1'
 
 services:
-  db:
+  aims_enrollment_db:
     image: 'postgres'
     container_name: aims_enrollment_db
     ports:
@@ -9,11 +9,11 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
-  enrollment_ms:
-    image: 'enrollment_ms:latest'
+  aims_enrollment_ms:
+    image: enrollment_ms
     build: ./
-    container_name: enrollment_ms
+    container_name: aims_enrollment_ms
     depends_on:
-      - db
+      - aims_enrollment_db
     ports:
       - "8080:8080"
