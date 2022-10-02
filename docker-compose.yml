@@ -1,9 +1,9 @@
-version: '3.8'
+version: "3.8"
 name: aims
 
 services:
   enrollment_db:
-    image: postgres
+    image: postgres:latest
     container_name: enrollment_db
     environment:
       - POSTGRES_DB=enrollments
@@ -17,19 +17,17 @@ services:
       - enrollment
 
   enrollment_ms:
-    build: ./
+    build: .
     image: aims_enrollment_ms
     container_name: enrollment_ms
     depends_on:
       - enrollment_db
-    ports:
-      - "8080:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://enrollment_db:5432/enrollments
       - SPRING_DATASOURCE_USERNAME=aims
       - SPRING_DATASOURCE_PASSWORD=aims
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
-
+    ports:
+      - "8080:8080"
     networks:
       - enrollment
 
