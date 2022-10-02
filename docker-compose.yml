@@ -13,8 +13,6 @@ services:
       - "5432:5432"
     volumes:
       - enrollment:/var/lib/postgresql/data
-    networks:
-      - enrollment
 
   enrollment_ms:
     build: .
@@ -22,18 +20,14 @@ services:
     container_name: enrollment_ms
     depends_on:
       - enrollment_db
+    links:
+      - enrollment_db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://enrollment_db:5432/enrollments
       - SPRING_DATASOURCE_USERNAME=aims
       - SPRING_DATASOURCE_PASSWORD=aims
     ports:
       - "8080:8080"
-    networks:
-      - enrollment
 
 volumes:
   enrollment:
-
-networks:
-  enrollment:
-    driver: bridge
