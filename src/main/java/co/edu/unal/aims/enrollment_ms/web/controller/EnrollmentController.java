@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,8 +30,6 @@ public class EnrollmentController {
 
         if(userId != null && groupId == null  && subjectId == null && semester == null){
             enrollments = enrollmentService.findByUser(userId);
-        }else if(userId == null && groupId != null  && subjectId == null && semester == null){
-            enrollments = enrollmentService.findByGroup(groupId);
         }else if(userId == null && groupId == null  && subjectId != null && semester == null){
             enrollments = enrollmentService.findBySubject(subjectId);
         }else if(userId == null && groupId == null  && subjectId == null && semester != null){
@@ -41,6 +38,12 @@ public class EnrollmentController {
             enrollments = enrollmentService.findByUserAndSemester(userId, semester);
         }else if(userId == null && groupId == null  && subjectId != null && semester != null){
             enrollments = enrollmentService.findBySubjectAndSemester(subjectId, semester);
+        }else if(userId == null && groupId != null  && subjectId != null && semester == null){
+            enrollments = enrollmentService.findBySubjectAndGroup(subjectId, groupId);
+        }else if(userId != null && groupId == null  && subjectId != null && semester == null){
+            enrollments = enrollmentService.findByUserAndSubject(userId, subjectId);
+        }else if(userId == null && groupId == null  && subjectId == null && semester == null){
+            enrollments = enrollmentService.findAll();
         }else{
             return ResponseEntity.noContent().build();
         }
@@ -76,8 +79,9 @@ public class EnrollmentController {
 
     @DeleteMapping
     public ResponseEntity<Enrollment> cancelEnrollment(@RequestParam(name = "user") String user,
-                                                       @RequestParam(name = "subject") String subject){
-        Enrollment enrollmentDeleted = enrollmentService.deleteEnrollment(user, subject);
+                                                       @RequestParam(name = "subject") String subject,
+                                                       @RequestParam(name = "semester") String semester){
+        Enrollment enrollmentDeleted = enrollmentService.deleteEnrollment(user, subject, semester);
         if (enrollmentDeleted == null){
             return ResponseEntity.notFound().build();
         }
@@ -89,9 +93,10 @@ public class EnrollmentController {
     public ResponseEntity<Enrollment> updateFinalGrade(@RequestBody EnrollmentDto enrollmentDto){
         String user = enrollmentDto.getUser();
         String subjectId = enrollmentDto.getSubject();
+        String semester = enrollmentDto.getSemester();
         Double finalGrade = enrollmentDto.getFinalGrade();
 
-        Enrollment enrollment = enrollmentService.updateFinalGrade(user, subjectId, finalGrade);
+        Enrollment enrollment = enrollmentService.updateFinalGrade(user, subjectId, semester, finalGrade);
         if (enrollment == null){
             return ResponseEntity.notFound().build();
         }

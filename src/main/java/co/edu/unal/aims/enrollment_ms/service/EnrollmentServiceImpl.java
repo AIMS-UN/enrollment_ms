@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EnrollmentServiceImpl implements EnrollmentService{
@@ -20,8 +19,7 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
     @Override
     public Enrollment getEnrollment(int id) {
-        Enrollment enrollment = enrollmentRepository.findById(id).orElse(null);
-        return enrollment;
+        return enrollmentRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -30,8 +28,8 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     }
 
     @Override
-    public Enrollment deleteEnrollment(String user, String subject) {
-        Enrollment enrollment  = enrollmentRepository.findByUserAndSubject(user, subject);
+    public Enrollment deleteEnrollment(String user, String subject, String semester) {
+        Enrollment enrollment  = enrollmentRepository.findByUserAndSubjectAndSemester(user, subject, semester);
         if (enrollment == null){
             return null;
         }
@@ -40,8 +38,8 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     }
 
     @Override
-    public Enrollment updateFinalGrade(String user, String subject, Double finalGrade) {
-        Enrollment enrollment = enrollmentRepository.findByUserAndSubject(user, subject);
+    public Enrollment updateFinalGrade(String user, String subject, String semester, Double finalGrade) {
+        Enrollment enrollment = enrollmentRepository.findByUserAndSubjectAndSemester(user, subject, semester);
         if (enrollment == null){
             return null;
         }
@@ -50,13 +48,13 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     }
 
     @Override
-    public List<Enrollment> findByUser(String uuid) {
-        return enrollmentRepository.findAllByUser(uuid);
+    public List<Enrollment> findAll(){
+        return enrollmentRepository.findAll();
     }
 
     @Override
-    public List<Enrollment> findByGroup(String group) {
-        return enrollmentRepository.findAllByGroup(group);
+    public List<Enrollment> findByUser(String uuid) {
+        return enrollmentRepository.findAllByUser(uuid);
     }
 
     @Override
@@ -77,5 +75,15 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     @Override
     public List<Enrollment> findBySubjectAndSemester(String subject, String semester) {
         return enrollmentRepository.findAllBySubjectAndSemester(subject, semester);
+    }
+
+    @Override
+    public List<Enrollment> findBySubjectAndGroup(String subject, String group) {
+        return enrollmentRepository.findAllBySubjectAndGroup(subject, group);
+    }
+
+    @Override
+    public List<Enrollment> findByUserAndSubject(String uuid, String subject) {
+        return enrollmentRepository.findAllByUserAndSubject(uuid, subject);
     }
 }
