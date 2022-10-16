@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/enrollments")
@@ -56,7 +57,7 @@ public class EnrollmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Enrollment> getEnrollment(@PathVariable("id") Integer id){
+    public ResponseEntity<Enrollment> getEnrollment(@PathVariable("id") UUID id){
         Enrollment enrollment = enrollmentService.getEnrollment(id);
         if (enrollment == null){
             return ResponseEntity.notFound().build();

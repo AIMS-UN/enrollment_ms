@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "enrollments")
@@ -12,15 +13,16 @@ import javax.persistence.*;
 public class Enrollment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "enrollment_id")
-    private Integer id;
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "enrollment_id", insertable = false, updatable = false, nullable = false)
+    private UUID id;
+    @Column(name = "user_id", updatable = false, nullable = false)
     private String user;
-    @Column(name = "group_id")
+    @Column(name = "group_id", updatable = false, nullable = false)
     private String group;
-    @Column(name = "subject_id")
+    @Column(name = "subject_id", updatable = false, nullable = false)
     private String subject;
+    @Column(name = "semester", updatable = false, nullable = false)
     private String semester;
     @Column(name = "final_grade")
     private Double finalGrade;
