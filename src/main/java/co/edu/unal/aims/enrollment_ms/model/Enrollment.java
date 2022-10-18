@@ -3,6 +3,7 @@ package co.edu.unal.aims.enrollment_ms.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -13,8 +14,9 @@ import java.util.UUID;
 public class Enrollment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "enrollment_id", insertable = false, updatable = false, nullable = false)
+    @GeneratedValue
+    @Type(type = "pg-uuid")
+    @Column(name = "enrollment_id", updatable = false, nullable = false)
     private UUID id;
     @Column(name = "user_id", updatable = false, nullable = false)
     private String user;

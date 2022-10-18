@@ -28,7 +28,7 @@ public class EnrollmentController {
                                                            @RequestParam(name="subject", required=false) String subjectId,
                                                            @RequestParam(name="semester", required=false) String semester){
         List<Enrollment> enrollments;
-
+        System.out.println("getEnrollments Called");
         if(userId != null && groupId == null  && subjectId == null && semester == null){
             enrollments = enrollmentService.findByUser(userId);
         }else if(userId == null && groupId == null  && subjectId != null && semester == null){
@@ -46,13 +46,17 @@ public class EnrollmentController {
         }else if(userId == null && groupId == null  && subjectId == null && semester == null){
             enrollments = enrollmentService.findAll();
         }else{
+            System.out.println("NO CONTENT");
             return ResponseEntity.noContent().build();
         }
 
         if (enrollments.isEmpty()){
+            System.out.println("LIST EMPTY");
             return ResponseEntity.notFound().build();
         }
 
+        System.out.println("Enrollments Return:");
+        System.out.println(enrollments);
         return ResponseEntity.ok(enrollments);
     }
 
@@ -67,6 +71,7 @@ public class EnrollmentController {
 
     @PostMapping
     public ResponseEntity<Enrollment> createEnrollment(@RequestBody EnrollmentDto enrollmentDto){
+        System.out.println("createEnrollment Called");
         Enrollment enrollment = new Enrollment(
                 enrollmentDto.getUser(),
                 enrollmentDto.getGroup(),
@@ -75,6 +80,8 @@ public class EnrollmentController {
                 null
         );
         Enrollment createdEnrollment = enrollmentService.createEnrollment(enrollment);
+        System.out.println("Created Enrollment:");
+        System.out.println(createdEnrollment);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEnrollment);
     }
 

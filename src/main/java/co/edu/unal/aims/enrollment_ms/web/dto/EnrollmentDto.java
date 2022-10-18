@@ -1,7 +1,5 @@
 package co.edu.unal.aims.enrollment_ms.web.dto;
 
-import java.util.UUID;
-
 public class EnrollmentDto {
     private String user;
     private String subject;
