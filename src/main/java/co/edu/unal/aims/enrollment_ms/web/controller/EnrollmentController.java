@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
@@ -27,8 +28,8 @@ public class EnrollmentController {
                                                            @RequestParam(name="group", required=false) String groupId,
                                                            @RequestParam(name="subject", required=false) String subjectId,
                                                            @RequestParam(name="semester", required=false) String semester){
-        List<Enrollment> enrollments;
-        System.out.println("getEnrollments Called");
+        List<Enrollment> enrollments = new ArrayList<Enrollment>();
+        
         if(userId != null && groupId == null  && subjectId == null && semester == null){
             enrollments = enrollmentService.findByUser(userId);
         }else if(userId == null && groupId == null  && subjectId != null && semester == null){
@@ -47,16 +48,14 @@ public class EnrollmentController {
             enrollments = enrollmentService.findAll();
         }else{
             System.out.println("NO CONTENT");
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(enrollments).noContent().build();
         }
 
         if (enrollments.isEmpty()){
             System.out.println("LIST EMPTY");
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(enrollments).noContent().build();
         }
-
-        System.out.println("Enrollments Return:");
-        System.out.println(enrollments);
+        
         return ResponseEntity.ok(enrollments);
     }
 
@@ -71,7 +70,6 @@ public class EnrollmentController {
 
     @PostMapping
     public ResponseEntity<Enrollment> createEnrollment(@RequestBody EnrollmentDto enrollmentDto){
-        System.out.println("createEnrollment Called");
         Enrollment enrollment = new Enrollment(
                 enrollmentDto.getUser(),
                 enrollmentDto.getGroup(),
@@ -80,8 +78,6 @@ public class EnrollmentController {
                 null
         );
         Enrollment createdEnrollment = enrollmentService.createEnrollment(enrollment);
-        System.out.println("Created Enrollment:");
-        System.out.println(createdEnrollment);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEnrollment);
     }
 
