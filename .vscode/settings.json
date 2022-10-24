@@ -1,0 +1,15 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5433,
+      "driver": "PostgreSQL",
+      "name": "enrollment",
+      "group": "aims",
+      "database": "enrollments",
+      "username": "aims",
+      "password": "aims"
+    }
+  ]
+}
